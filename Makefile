@@ -1,6 +1,6 @@
 CC = gcc
 
-CFLAGS = -Wall -Wextra -Werror -Iinclude
+CFLAGS = -std=c11 -Wall -Wextra -Werror -Iinclude
 
 # SRC = $(wildcard src/*.c)
 SRC = src/main.c src/file.c

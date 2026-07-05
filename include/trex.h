@@ -6,12 +6,15 @@
 #define MAX_EXT 32
 #define MAX_PATH 4096
 
+#include <stdbool.h>
+
 typedef struct
 {
     char name[MAX_NAME];
+
     char extension[MAX_EXT];
 
-    int is_directory;
+    bool is_directory;
 
 } File;
 

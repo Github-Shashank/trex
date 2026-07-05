@@ -3,6 +3,10 @@
 
 #include "trex.h"
 
-void load_directory(Trex *trex);
+void load_directory(Trex *app);
+
+// void detect_extension(File *file);
+
+// void detect_file_type(File *file);
 
 #endif
