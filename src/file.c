@@ -17,6 +17,11 @@ void load_directory(Trex *app)
 
     while ((entry = readdir(directory)) != NULL)
     {
+        if (strcmp(entry->d_name, ".") == 0 ||
+            strcmp(entry->d_name, "..") == 0)
+        {
+            continue;
+        }
         strcpy(app->files[app->count].name, entry->d_name);
 
         app->count++;
