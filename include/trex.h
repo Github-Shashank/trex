@@ -9,6 +9,10 @@
 #include <stdbool.h>
 #include <sys/stat.h>
 
+char current_path[MAX_PATH];
+
+int selected_index;
+
 typedef struct
 {
     char name[MAX_NAME];
