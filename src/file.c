@@ -6,11 +6,17 @@
 #include <sys/stat.h>
 #include <stdio.h>
 
+#include "platform.h"
+
 static void detect_extension(File *file);
 
 static void detect_file_type(File *file);
 
 static void initialize_file(File *file, const char *name);
+
+static bool should_swap(const File *left, const File *right);
+
+static void swap_files(File *left, File *right);
 
 void load_directory(Trex *app)
 {
@@ -61,15 +67,10 @@ static void detect_extension(File *file)
 
 static void detect_file_type(File *file)
 {
-    struct stat info;
-
-    file->is_directory = false;
-
-    if (stat(file->name, &info) != 0)
+    if (stat(file->name, &file->info) != 0)
         return;
 
-    if (S_ISDIR(info.st_mode))
-        file->is_directory = true;
+    file->is_directory = S_ISDIR(file->info.st_mode);
 }
 
 static void initialize_file(File *file, const char *name)
@@ -83,4 +84,41 @@ static void initialize_file(File *file, const char *name)
     detect_extension(file);
 
     detect_file_type(file);
+}
+
+static bool should_swap(const File *left, const File *right)
+{
+    if (left->is_directory != right->is_directory)
+    {
+        return !left->is_directory;
+    }
+
+return trex_strcasecmp(left->name, right->name) > 0;
+}
+
+static void swap_files(File *left, File *right)
+{
+    File temp = *left;
+
+    *left = *right;
+
+    *right = temp;
+}
+
+void sort_files(Trex *app)
+{
+    for (int i = 1; i < app->count; i++)
+    {
+        int j = i;
+
+        while (j > 0 &&
+               should_swap(&app->files[j - 1],
+                           &app->files[j]))
+        {
+            swap_files(&app->files[j - 1],
+                       &app->files[j]);
+
+            j--;
+        }
+    }
 }

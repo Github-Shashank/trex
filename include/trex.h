@@ -7,6 +7,7 @@
 #define MAX_PATH 4096
 
 #include <stdbool.h>
+#include <sys/stat.h>
 
 typedef struct
 {
@@ -15,6 +16,8 @@ typedef struct
     char extension[MAX_EXT];
 
     bool is_directory;
+
+    struct stat info;
 
 } File;
 

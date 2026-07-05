@@ -16,6 +16,7 @@ int main(void)
     app.running = 1;
 
     load_directory(&app);
+    sort_files(&app);
 
     for (int i = 0; i < app.count; i++)
     {

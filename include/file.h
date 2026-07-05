@@ -4,6 +4,7 @@
 #include "trex.h"
 
 void load_directory(Trex *app);
+void sort_files(Trex *app);
 
 // void detect_extension(File *file);
 
