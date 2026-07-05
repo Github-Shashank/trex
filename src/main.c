@@ -19,7 +19,10 @@ int main(void)
 
     for (int i = 0; i < app.count; i++)
     {
-        printf("%s\n", app.files[i].name);
+        printf("[%c] %-20s -> %s\n",
+            app.files[i].is_directory ? 'D' : 'F',
+            app.files[i].name,
+            app.files[i].extension);
     }
     return 0;
 

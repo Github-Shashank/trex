@@ -3,9 +3,14 @@
 #include <dirent.h>
 #include <string.h>
 
+#include <sys/stat.h>
+#include <stdio.h>
+
 static void detect_extension(File *file);
 
 static void detect_file_type(File *file);
+
+static void initialize_file(File *file, const char *name);
 
 void load_directory(Trex *app)
 {
@@ -26,10 +31,7 @@ void load_directory(Trex *app)
         {
             continue;
         }
-        strcpy(app->files[app->count].name, entry->d_name);
-
-        detect_extension(&app->files[app->count]);
-        detect_file_type(&app->files[app->count]); 
+        initialize_file(&app->files[app->count], entry->d_name);
 
         app->count++;
     }
@@ -59,5 +61,26 @@ static void detect_extension(File *file)
 
 static void detect_file_type(File *file)
 {
-    (void)file;
+    struct stat info;
+
+    file->is_directory = false;
+
+    if (stat(file->name, &info) != 0)
+        return;
+
+    if (S_ISDIR(info.st_mode))
+        file->is_directory = true;
+}
+
+static void initialize_file(File *file, const char *name)
+{
+    snprintf(file->name, MAX_NAME, "%s", name);
+
+    file->extension[0] = '\0';
+
+    file->is_directory = false;
+
+    detect_extension(file);
+
+    detect_file_type(file);
 }
