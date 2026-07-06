@@ -3,11 +3,14 @@ CC = gcc
 CFLAGS = -std=c11 -Wall -Wextra -Werror -Iinclude
 
 # SRC = $(wildcard src/*.c)
-# SRC = src/main.c src/file.c
-SRC = src/main.c \
-      src/file.c \
-      src/platform.c \
-      src/engine.c
+SRC = \
+    src/main.c \
+    src/file.c \
+    src/platform.c \
+    src/engine.c \
+    src/input.c \
+    src/screen.c \
+    src/terminal.c
 
 OBJ = $(SRC:.c=.o)
 

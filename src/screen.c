@@ -1,16 +1,25 @@
 #include "screen.h"
-
+#include <stdio.h>
 #include "terminal.h"
 
 void draw_screen(const Trex *trex)
 {
-    (void)trex;
-
     terminal_clear();
 
-    terminal_print(1,2,"Trex");
+    for (int i = 0; i < trex->count; i++)
+    {
+        printf("%c [%c] %-20s\n",
 
-    terminal_print(3,2,"Press q to quit.");
+            (i == trex->selected_index)
+                ? '>'
+                : ' ',
+
+            trex->files[i].is_directory
+                ? 'D'
+                : 'F',
+
+            trex->files[i].name);
+    }
 
     terminal_refresh();
 }

@@ -1,5 +1,7 @@
 #include "engine.h"
-#include <stdio.h>
+#include "screen.h"
+#include "input.h"
+#include "terminal.h"
 
 int main(void)
 {
@@ -9,12 +11,16 @@ int main(void)
 
     trex_load(&trex);
 
-    for (int i = 0; i < trex.count; i++)
+    terminal_initialize();
+
+    while (trex.running)
     {
-        printf("%c %s\n",
-               (i == trex.selected_index) ? '>' : ' ',
-               trex.files[i].name);
+        draw_screen(&trex);
+
+        handle_input(&trex);
     }
+
+    terminal_shutdown();
 
     trex_shutdown(&trex);
 
