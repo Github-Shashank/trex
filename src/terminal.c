@@ -1,14 +1,17 @@
 #include "terminal.h"
+#include "platform.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 
 void terminal_initialize(void)
 {
+    platform_terminal_enable_raw();
 }
 
 void terminal_shutdown(void)
 {
+    platform_terminal_disable_raw();
 }
 
 void terminal_clear(void)
@@ -23,7 +26,7 @@ void terminal_refresh(void)
 
 int terminal_read_key(void)
 {
-    return getchar();
+    return platform_read_key();
 }
 
 void terminal_print(int y, int x, const char *text)

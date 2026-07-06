@@ -5,7 +5,7 @@
 
 void handle_input(Trex *trex)
 {
-    int key = getchar();
+    int key = terminal_read_key();
 
     switch (key)
     {
