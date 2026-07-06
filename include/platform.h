@@ -1,6 +1,9 @@
 #ifndef PLATFORM_H
 #define PLATFORM_H
 
-int trex_strcasecmp(const char *left, const char *right);
+char *trex_getcwd(char *buffer, int size);
+
+int trex_strcasecmp(const char *left,
+                    const char *right);
 
 #endif

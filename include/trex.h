@@ -1,21 +1,19 @@
 #ifndef TREX_H
 #define TREX_H
 
+#include <stdbool.h>
+#include <sys/stat.h>
+
 #define MAX_FILES 4096
 #define MAX_NAME 256
 #define MAX_EXT 32
 #define MAX_PATH 4096
 
-#include <stdbool.h>
-#include <sys/stat.h>
-
-char current_path[MAX_PATH];
-
-int selected_index;
-
 typedef struct
 {
     char name[MAX_NAME];
+
+    char path[MAX_PATH];
 
     char extension[MAX_EXT];
 
@@ -27,14 +25,15 @@ typedef struct
 
 typedef struct
 {
-    File files[MAX_FILES];
+    File *files;
 
     int count;
-    int selected;
 
-    char cwd[MAX_PATH];
+    int selected_index;
 
-    int running;
+    char current_path[MAX_PATH];
+
+    bool running;
 
 } Trex;
 

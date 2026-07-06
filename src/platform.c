@@ -1,4 +1,22 @@
-#include "platform.h"
+#ifdef _WIN32
+
+#include <direct.h>
+
+char *trex_getcwd(char *buffer, int size)
+{
+    return _getcwd(buffer, size);
+}
+
+#else
+
+#include <unistd.h>
+
+char *trex_getcwd(char *buffer, int size)
+{
+    return getcwd(buffer, size);
+}
+
+#endif
 
 #ifdef _WIN32
 

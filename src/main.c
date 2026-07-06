@@ -1,42 +1,24 @@
-#include "trex.h"
-#include "screen.h"
-#include "input.h"
-#include "terminal.h"
-#include "file.h"
+#include "engine.h"
 
-#include <string.h>
 #include <stdio.h>
 
 int main(void)
 {
-    Trex app;
+    Trex trex;
 
-    memset(&app, 0, sizeof(Trex));
+    trex_initialize(&trex);
 
-    app.running = 1;
+    trex_load(&trex);
 
-    load_directory(&app);
-    sort_files(&app);
-
-    for (int i = 0; i < app.count; i++)
+    for (int i = 0; i < trex.count; i++)
     {
         printf("[%c] %-20s -> %s\n",
-            app.files[i].is_directory ? 'D' : 'F',
-            app.files[i].name,
-            app.files[i].extension);
-    }
-    return 0;
-
-    terminal_initialize();
-
-    while (app.running)
-    {
-        draw_screen(&app);
-
-        handle_input(&app);
+               trex.files[i].is_directory ? 'D' : 'F',
+               trex.files[i].name,
+               trex.files[i].path);
     }
 
-    terminal_shutdown();
+    trex_shutdown(&trex);
 
     return 0;
 }

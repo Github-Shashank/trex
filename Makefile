@@ -6,7 +6,8 @@ CFLAGS = -std=c11 -Wall -Wextra -Werror -Iinclude
 # SRC = src/main.c src/file.c
 SRC = src/main.c \
       src/file.c \
-      src/platform.c
+      src/platform.c \
+      src/engine.c
 
 OBJ = $(SRC:.c=.o)
 

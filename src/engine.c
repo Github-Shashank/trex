@@ -1,7 +1,10 @@
 #include "engine.h"
 
 #include "file.h"
+#include "platform.h"
 
+#include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
 
 bool trex_change_directory(Trex *trex, const char *path);
@@ -10,9 +13,23 @@ bool trex_go_parent(Trex *trex);
 
 void trex_reload(Trex *trex);
 
-void trex_initialize(Trex *app)
+#include <stdlib.h>
+
+void trex_initialize(Trex *trex)
 {
-    memset(app, 0, sizeof(Trex));
+    memset(trex, 0, sizeof(Trex));
+
+    trex->files = malloc(sizeof(File) * MAX_FILES);
+
+    if (trex->files == NULL)
+    {
+        fprintf(stderr, "Failed to allocate memory.\n");
+        exit(EXIT_FAILURE);
+    }
+
+    trex_getcwd(trex->current_path, MAX_PATH);
+
+    trex->running = true;
 }
 
 void trex_load(Trex *app)
@@ -22,7 +39,8 @@ void trex_load(Trex *app)
     sort_files(app);
 }
 
-void trex_shutdown(Trex *app)
+void trex_shutdown(Trex *trex)
 {
-    (void)app;
+    free(trex->files);
+    trex->files = NULL;
 }

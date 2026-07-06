@@ -12,7 +12,7 @@ static void detect_extension(File *file);
 
 static void detect_file_type(File *file);
 
-static void initialize_file(File *file, const char *name);
+static void initialize_file(File *file, const char *current_path, const char *name);
 
 static bool should_swap(const File *left, const File *right);
 
@@ -28,8 +28,14 @@ void load_directory(Trex *app)
     directory = opendir(".");
 
     if (directory == NULL)
+    {
+        perror("opendir");
         return;
+    }
 
+    if (directory == NULL)
+        return;
+    
     while ((entry = readdir(directory)) != NULL)
     {
         if (strcmp(entry->d_name, ".") == 0 ||
@@ -37,7 +43,9 @@ void load_directory(Trex *app)
         {
             continue;
         }
-        initialize_file(&app->files[app->count], entry->d_name);
+        initialize_file(&app->files[app->count],
+                        app->current_path,
+                        entry->d_name);
 
         app->count++;
     }
@@ -67,19 +75,21 @@ static void detect_extension(File *file)
 
 static void detect_file_type(File *file)
 {
-    if (stat(file->name, &file->info) != 0)
+    if (stat(file->path, &file->info) != 0)
         return;
 
     file->is_directory = S_ISDIR(file->info.st_mode);
 }
 
-static void initialize_file(File *file, const char *name)
+static void initialize_file(File *file, const char *current_path, const char *name)
 {
-    snprintf(file->name, MAX_NAME, "%s", name);
+    snprintf(file->path, MAX_PATH, "%s/%s", current_path, name);
 
     file->extension[0] = '\0';
 
     file->is_directory = false;
+
+    strcpy(file->name, name);
 
     detect_extension(file);
 
@@ -93,7 +103,7 @@ static bool should_swap(const File *left, const File *right)
         return !left->is_directory;
     }
 
-return trex_strcasecmp(left->name, right->name) > 0;
+    return trex_strcasecmp(left->name, right->name) > 0;
 }
 
 static void swap_files(File *left, File *right)
