@@ -74,3 +74,30 @@ bool trex_change_directory(Trex *trex, const char *path)
 
     return true;
 }
+
+void trex_move_up(Trex *trex)
+{
+    if (trex->selected_index > 0)
+    {
+        trex->selected_index--;
+    }
+}
+
+void trex_move_down(Trex *trex)
+{
+    if (trex->selected_index < trex->count - 1)
+    {
+        trex->selected_index++;
+    }
+}
+
+File *trex_selected_file(Trex *trex)
+{
+    if (trex->count == 0)
+    {
+        return NULL;
+    }
+
+    return &trex->files[trex->selected_index];
+}
+

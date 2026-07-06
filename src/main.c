@@ -1,5 +1,4 @@
 #include "engine.h"
-
 #include <stdio.h>
 
 int main(void)
@@ -8,19 +7,13 @@ int main(void)
 
     trex_initialize(&trex);
 
-    // trex_load(&trex);
-    if (!trex_change_directory(&trex, "does_not_exist"))
-{
-    printf("Directory not found\n");
-}
-
+    trex_load(&trex);
 
     for (int i = 0; i < trex.count; i++)
     {
-        printf("[%c] %-20s -> %s\n",
-               trex.files[i].is_directory ? 'D' : 'F',
-               trex.files[i].name,
-               trex.files[i].path);
+        printf("%c %s\n",
+               (i == trex.selected_index) ? '>' : ' ',
+               trex.files[i].name);
     }
 
     trex_shutdown(&trex);
