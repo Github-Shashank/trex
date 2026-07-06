@@ -32,15 +32,45 @@ void trex_initialize(Trex *trex)
     trex->running = true;
 }
 
-void trex_load(Trex *app)
+void trex_load(Trex *trex)
 {
-    load_directory(app);
-
-    sort_files(app);
+    trex_reload(trex);
 }
 
 void trex_shutdown(Trex *trex)
 {
     free(trex->files);
     trex->files = NULL;
+}
+
+void trex_reload(Trex *trex)
+{
+    load_directory(trex);
+
+    sort_files(trex);
+
+    trex->selected_index = 0;
+}
+
+bool trex_change_directory(Trex *trex, const char *path)
+{
+    struct stat info;
+
+    if (stat(path, &info) != 0)
+    {
+        return false;
+    }
+
+    if (!S_ISDIR(info.st_mode))
+    {
+        return false;
+    }
+
+    strncpy(trex->current_path, path, MAX_PATH - 1);
+
+    trex->current_path[MAX_PATH - 1] = '\0';
+
+    trex_reload(trex);
+
+    return true;
 }

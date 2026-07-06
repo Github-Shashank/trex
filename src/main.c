@@ -8,7 +8,12 @@ int main(void)
 
     trex_initialize(&trex);
 
-    trex_load(&trex);
+    // trex_load(&trex);
+    if (!trex_change_directory(&trex, "does_not_exist"))
+{
+    printf("Directory not found\n");
+}
+
 
     for (int i = 0; i < trex.count; i++)
     {

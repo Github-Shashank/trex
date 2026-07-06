@@ -25,7 +25,7 @@ void load_directory(Trex *app)
 
     app->count = 0;
 
-    directory = opendir(".");
+    directory = opendir(app->current_path);
 
     if (directory == NULL)
     {
