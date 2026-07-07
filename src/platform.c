@@ -2,6 +2,7 @@
 #include "key.h"
 
 #include <termios.h>
+#include <sys/ioctl.h>
 #include <unistd.h>
 #include <stdio.h>
 #include <ctype.h>
@@ -13,6 +14,26 @@
 char *trex_getcwd(char *buffer, int size)
 {
     return _getcwd(buffer, size);
+}
+
+#include <windows.h>
+
+void platform_get_terminal_size(int *rows,
+                                int *cols)
+{
+    CONSOLE_SCREEN_BUFFER_INFO info;
+
+    GetConsoleScreenBufferInfo(
+        GetStdHandle(STD_OUTPUT_HANDLE),
+        &info);
+
+    *cols =
+        info.srWindow.Right -
+        info.srWindow.Left + 1;
+
+    *rows =
+        info.srWindow.Bottom -
+        info.srWindow.Top + 1;
 }
 
 #else
@@ -118,5 +139,22 @@ Key platform_read_key(void)
             return KEY_BACKSPACE;
         default:
             return KEY_NONE;
+    }
+}
+
+void platform_get_terminal_size(int *rows,
+                                int *cols)
+{
+    struct winsize ws;
+
+    if (ioctl(STDOUT_FILENO, TIOCGWINSZ, &ws) == 0)
+    {
+        *rows = ws.ws_row;
+        *cols = ws.ws_col;
+    }
+    else
+    {
+        *rows = 24;
+        *cols = 80;
     }
 }

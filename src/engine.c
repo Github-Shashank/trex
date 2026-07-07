@@ -34,7 +34,11 @@ void trex_initialize(Trex *trex)
     trex->running = true;
 
     trex->scroll_offset = 0;
-    trex->screen_rows = 20;
+
+    int cols;
+    platform_get_terminal_size(&trex->screen_rows, &cols);
+
+    trex->screen_rows -= 4;
 }
 
 void trex_load(Trex *trex)
