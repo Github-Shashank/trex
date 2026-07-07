@@ -6,7 +6,17 @@ void draw_screen(const Trex *trex)
 {
     terminal_clear();
     printf("Current path: %s\n\n", trex->current_path);
-    for (int i = 0; i < trex->count; i++)
+    
+    int start = trex->scroll_offset;
+
+    int end = start + trex->screen_rows;
+
+    if (end > trex->count)
+    {
+        end = trex->count;
+    }
+
+    for (int i = start; i < end; i++)
     {
         printf("%c [%c] %-20s\n",
 

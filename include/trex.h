@@ -31,6 +31,10 @@ typedef struct
 
     int selected_index;
 
+    int scroll_offset;
+
+    int screen_rows;
+
     char current_path[MAX_PATH];
 
     bool running;

@@ -15,6 +15,8 @@ void trex_reload(Trex *trex);
 
 static void trex_restore_selection(Trex *trex, const char *name);
 
+static void trex_update_scroll(Trex *trex);
+
 void trex_initialize(Trex *trex)
 {
     memset(trex, 0, sizeof(Trex));
@@ -30,6 +32,9 @@ void trex_initialize(Trex *trex)
     trex_getcwd(trex->current_path, MAX_PATH);
 
     trex->running = true;
+
+    trex->scroll_offset = 0;
+    trex->screen_rows = 20;
 }
 
 void trex_load(Trex *trex)
@@ -50,6 +55,8 @@ void trex_reload(Trex *trex)
     sort_files(trex);
 
     trex->selected_index = 0;
+
+    trex->scroll_offset = 0;
 }
 
 bool trex_change_directory(Trex *trex, const char *path)
@@ -114,6 +121,7 @@ void trex_move_up(Trex *trex)
     {
         trex->selected_index--;
     }
+    trex_update_scroll(trex);
 }
 
 void trex_move_down(Trex *trex)
@@ -122,6 +130,7 @@ void trex_move_down(Trex *trex)
     {
         trex->selected_index++;
     }
+    trex_update_scroll(trex);
 }
 
 File *trex_selected_file(Trex *trex)
@@ -146,4 +155,20 @@ static void trex_restore_selection(Trex *trex, const char *name)
     }
 
     trex->selected_index = 0;
+}
+
+static void trex_update_scroll(Trex *trex)
+{
+    if (trex->selected_index < trex->scroll_offset)
+    {
+        trex->scroll_offset = trex->selected_index;
+    }
+
+    if (trex->selected_index >=
+        trex->scroll_offset + trex->screen_rows)
+    {
+        trex->scroll_offset =
+            trex->selected_index -
+            trex->screen_rows + 1;
+    }
 }

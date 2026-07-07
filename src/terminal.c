@@ -1,6 +1,6 @@
 #include "terminal.h"
 #include "platform.h"
-
+#include "trex.h"
 #include <stdio.h>
 #include <stdlib.h>
 
