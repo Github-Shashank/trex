@@ -110,7 +110,9 @@ Key platform_read_key(void)
 
         case 'q':
             return KEY_QUIT;
-
+        case '\n':
+        case '\r':
+            return KEY_ENTER;
         default:
             return KEY_NONE;
     }

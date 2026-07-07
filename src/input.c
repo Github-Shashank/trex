@@ -20,6 +20,20 @@ switch (key)
     case KEY_QUIT:
         trex->running = false;
         break;
+    case KEY_ENTER:
+    {
+        File *selected = trex_selected_file(trex);
+
+        if (selected == NULL)
+            break;
+
+        if (!selected->is_directory)
+            break;
+
+        trex_change_directory(trex, selected->path);
+
+        break;
+    }
 
     default:
         break;

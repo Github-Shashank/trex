@@ -54,6 +54,7 @@ void trex_reload(Trex *trex)
 
 bool trex_change_directory(Trex *trex, const char *path)
 {
+    printf("Changing to: %s\n", path);
     struct stat info;
 
     if (stat(path, &info) != 0)
@@ -73,7 +74,7 @@ bool trex_change_directory(Trex *trex, const char *path)
     trex_reload(trex);
 
     return true;
-}
+} 
 
 void trex_move_up(Trex *trex)
 {
