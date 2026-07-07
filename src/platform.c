@@ -113,6 +113,9 @@ Key platform_read_key(void)
         case '\n':
         case '\r':
             return KEY_ENTER;
+        case '\b':
+        case 127:
+            return KEY_BACKSPACE;
         default:
             return KEY_NONE;
     }

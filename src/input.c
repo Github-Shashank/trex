@@ -20,6 +20,7 @@ switch (key)
     case KEY_QUIT:
         trex->running = false;
         break;
+    case KEY_RIGHT:
     case KEY_ENTER:
     {
         File *selected = trex_selected_file(trex);
@@ -34,7 +35,12 @@ switch (key)
 
         break;
     }
-
+    case KEY_LEFT:
+    case KEY_BACKSPACE:
+    {
+        trex_go_parent(trex);
+        break;
+    }
     default:
         break;
 }

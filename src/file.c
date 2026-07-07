@@ -20,7 +20,6 @@ static void swap_files(File *left, File *right);
 
 void load_directory(Trex *app)
 {
-    printf("Loading: %s\n", app->current_path);
     DIR *directory;
     struct dirent *entry;
 

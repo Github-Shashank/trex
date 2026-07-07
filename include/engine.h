@@ -22,4 +22,6 @@ void trex_move_down(Trex *trex);
 
 File *trex_selected_file(Trex *trex);
 
+bool trex_go_parent(Trex *trex);
+
 #endif
