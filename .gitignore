@@ -1,0 +1,6 @@
+*.o
+trex
+make
+*.out
+*.log
+*.txt
