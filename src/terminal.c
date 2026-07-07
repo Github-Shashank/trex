@@ -24,7 +24,7 @@ void terminal_refresh(void)
     fflush(stdout);
 }
 
-int terminal_read_key(void)
+Key terminal_read_key(void)
 {
     return platform_read_key();
 }

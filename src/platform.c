@@ -1,5 +1,8 @@
 #include "platform.h"
+#include "key.h"
 
+#include <termios.h>
+#include <unistd.h>
 #include <stdio.h>
 #include <ctype.h>
 
@@ -43,15 +46,72 @@ int trex_strcasecmp(const char *left, const char *right)
            tolower((unsigned char)*right);
 }
 
+static struct termios original_termios;
+
 void platform_terminal_enable_raw(void)
 {
+    tcgetattr(STDIN_FILENO, &original_termios);
+
+    struct termios raw = original_termios;
+
+    raw.c_lflag &= ~(ICANON | ECHO);
+
+    tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw);
 }
 
 void platform_terminal_disable_raw(void)
 {
+    tcsetattr(STDIN_FILENO, TCSAFLUSH, &original_termios);
 }
 
-int platform_read_key(void)
+
+
+Key platform_read_key(void)
 {
-    return getchar();
+    int c = getchar();
+
+    if (c == 27)
+    {
+        int second = getchar();
+
+        if (second != '[')
+        {
+            return KEY_NONE;
+        }
+
+        int third = getchar();
+
+        switch (third)
+        {
+            case 'A':
+                return KEY_UP;
+
+            case 'B':
+                return KEY_DOWN;
+
+            case 'C':
+                return KEY_RIGHT;
+
+            case 'D':
+                return KEY_LEFT;
+
+            default:
+                return KEY_NONE;
+        }
+    }
+
+    switch (c)
+    {
+        case 'w':
+            return KEY_UP;
+
+        case 's':
+            return KEY_DOWN;
+
+        case 'q':
+            return KEY_QUIT;
+
+        default:
+            return KEY_NONE;
+    }
 }

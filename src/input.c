@@ -5,24 +5,23 @@
 
 void handle_input(Trex *trex)
 {
-    int key = terminal_read_key();
+Key key = terminal_read_key();
+//printf("Key = %d\n", key);
+switch (key)
+{
+    case KEY_UP:
+        trex_move_up(trex);
+        break;
 
-    switch (key)
-    {
-        case 'w':
-            trex_move_up(trex);
-            break;
+    case KEY_DOWN:
+        trex_move_down(trex);
+        break;
 
-        case 's':
-            trex_move_down(trex);
-            break;
+    case KEY_QUIT:
+        trex->running = false;
+        break;
 
-        case 'q':
-            trex->running = false;
-            break;
-        case '\n':
-            break;
-        case '\r':
-            break;
-    }
+    default:
+        break;
+}
 }
